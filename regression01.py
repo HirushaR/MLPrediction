@@ -23,10 +23,10 @@ df['label'] = df[forecast_col].shift(-forecast_Out)
 #print(df.head())
 #print(df.tail())
 
-X = np.array(df.drop(['label'],1))
+X = np.array(df.drop(['label'], 1))
+X = preprocessing.scale(X)
 X= X[:-forecast_Out]
 X_lately = X[-forecast_Out:]
-X = preprocessing.scale(X)
 
 df.dropna(inplace=True)
 Y = np.array(df['label'])
@@ -38,6 +38,11 @@ X_train, X_test, Y_train, Y_test = model_selection.train_test_split(X, Y, test_s
 clf = LinearRegression(n_jobs=10)
 clf.fit(X_train, Y_train)
 accuracy = clf.score(X_test, Y_test)
+#print(accuracy)
 
-print(accuracy)
+forecast_set = clf.predict(X_lately)
+print(forecast_set, accuracy, forecast_Out)
+
+
+
 
