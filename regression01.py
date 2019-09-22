@@ -19,13 +19,17 @@ forecast_Out = int(math.ceil(0.01*len(df)))
 #print(forecast_Out)
 
 df['label'] = df[forecast_col].shift(-forecast_Out)
-df.dropna(inplace=True)
+
 #print(df.head())
 #print(df.tail())
 
 X = np.array(df.drop(['label'],1))
-Y = np.array(df['label'])
+X= X[:-forecast_Out]
+X_lately = X[-forecast_Out:]
 X = preprocessing.scale(X)
+
+df.dropna(inplace=True)
+Y = np.array(df['label'])
 Y = np.array(df['label'])
 
 #print(len(X), len(Y))
